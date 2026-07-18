@@ -1,98 +1,97 @@
+# NestJS MCP/REST API
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> **Demonstração de integração entre APIs REST corporativas e Agentes de IA utilizando o Model Context Protocol (MCP).**
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este projeto exemplifica como transformar uma API NestJS convencional em um servidor MCP, permitindo que agentes de IA (como Claude e ChatGPT) interajam diretamente com a lógica de negócio de forma segura, padronizada e com alto reaproveitamento de código.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 💡 O Problema e a Solução
 
-## Project setup
+### O Desafio
+Integrar agentes de IA com sistemas internos geralmente exige a criação de conectores customizados ou a exposição insegura de chaves de API em prompts. Além disso, manter documentações de API (como Swagger) sincronizadas com as "skills" da IA gera overhead de manutenção.
 
+### A Abordagem MCP
+Utilizando o **Model Context Protocol**, esta API expõe um endpoint único que descreve suas capacidades para a IA. 
+- **Segurança:** Mantém a autenticação via API Key.
+- **Engenharia:** Reaproveita 100% dos *Services* e *Controllers* existentes do NestJS.
+- **Escalabilidade:** Permite que a IA execute operações complexas (CRUD) sem necessidade de código de integração específico no lado do cliente.
+
+---
+
+## 🛠️ Stack Técnica
+
+- **Framework:** [NestJS](https://nestjs.com/) (Node.js)
+- **Linguagem:** TypeScript
+- **ORM:** [Prisma](https://www.prisma.io/) com SQLite
+- **Protocolo:** [@modelcontextprotocol/sdk](https://modelcontextprotocol.io/)
+- **Package Manager:** PNPM
+
+---
+
+## 🌿 Estrutura de Branches
+
+Para facilitar o aprendizado, o repositório está organizado em:
+- `master`: Boilerplate inicial da API REST (ponto de partida para o tutorial).
+- `final`: Implementação completa com o servidor MCP configurado e integrado.
+
+---
+
+## 🚀 Setup e Instalação
+
+### 1. Configuração de Ambiente
 ```bash
-$ pnpm install
+cp .env.example .env
+```
+Gere uma chave segura para a `API_KEY`:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-## Compile and run the project
-
+### 2. Instalação e Banco de Dados
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
+pnpm prisma migrate dev
 ```
 
-## Run tests
-
+### 3. Execução
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# Development mode
+pnpm run start:dev
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🔌 Interface MCP (Model Context Protocol)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+A grande vantagem deste projeto é a camada MCP. Você pode inspecionar como a IA "enxerga" sua API utilizando o Inspector oficial:
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+npx @modelcontextprotocol/inspector --cli http://localhost:3000/mcp --transport http --method tools/list --header "X-API-Key: SUA_CHAVE_AQUI"
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Por que isso é relevante para Engenharia?
+Ao contrário de um webhook simples, o MCP fornece um **esquema tipado** de ferramentas. Quando a IA pergunta "quais tarefas estão pendentes?", o servidor MCP mapeia essa intenção diretamente para o `TasksService.findAll()`, garantindo que as regras de negócio sejam respeitadas.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🔒 Segurança e Produção
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **SSL/TLS:** Essencial para produção. Agentes de IA exigem HTTPS para comunicação segura.
+- **Portas:** Recomenda-se o uso da porta padrão `443` para evitar bloqueios de conectividade em plataformas como ChatGPT.
+- **Autenticação:** Implementada via `X-API-Key` no header, garantindo que apenas agentes autorizados invoquem as ferramentas.
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 👨‍💻 Sobre o Autor
 
-## Stay in touch
+**David Fernandes**  
+*Desenvolvedor Full Stack especializado em React, Next.js e TypeScript.*
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- 🌐 [Portfólio](https://www.davidfernandes.tech)
+- 🐙 [GitHub](https://github.com/david-sfernandes)
+- 📍 São Paulo, SP
