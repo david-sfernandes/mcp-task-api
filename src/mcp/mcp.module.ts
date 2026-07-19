@@ -4,7 +4,6 @@ import { McpServerFactory } from './mcp-server.factory';
 import { TaskService } from 'src/task/task.service';
 
 @Module({
-  imports: [],
   controllers: [McpController],
   providers: [McpServerFactory, TaskService]
 })

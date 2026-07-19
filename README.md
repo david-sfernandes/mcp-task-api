@@ -73,13 +73,14 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```bash
 pnpm install
 pnpm prisma migrate dev
+pnpm prisma generaye
 ```
 
 ### 3. Execution
 
 ```bash
 # Development mode
-pnpm run start:dev
+pnpm start:dev
 ```
 
 ---
