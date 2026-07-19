@@ -56,6 +56,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```bash
 pnpm install
 pnpm prisma migrate dev
+pnpm prisma generate
 ```
 
 ### 3. Execução
