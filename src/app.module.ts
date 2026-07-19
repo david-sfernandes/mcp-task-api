@@ -5,9 +5,10 @@ import { AppController } from "./app.controller";
 import { ApiKeyGuard } from "./guard/api-key.guard";
 import { PrismaModule } from "./prisma/prisma.module";
 import { TaskModule } from "./task/task.module";
+import { McpModule } from './mcp/mcp.module';
 
 @Module({
-	imports: [PrismaModule, TaskModule, ConfigModule.forRoot()],
+	imports: [PrismaModule, TaskModule, ConfigModule.forRoot(), McpModule],
 	controllers: [AppController],
 	providers: [{ provide: APP_GUARD, useClass: ApiKeyGuard }],
 })
